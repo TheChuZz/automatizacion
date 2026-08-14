@@ -1,5 +1,4 @@
 package LoginSteps;
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -12,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import pages.LoginPage;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginSteps {
     private WebDriver driver;
@@ -21,6 +22,15 @@ public class LoginSteps {
     public void setUP (){
         ChromeOptions option = new ChromeOptions();
         option.addArguments("--remote-allow-origins=*");//declarar argumentos con que se ejecutara el navegador
+        option.addArguments("--diseable-notifications");
+        option.addArguments("--incognito");
+        option.addArguments("--disable-features=PasswordManager");
+        option.addArguments("--disable-notifications");
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        option.setExperimentalOption("prefs", prefs);
+
         driver = new ChromeDriver (option);
         loginpage = new LoginPage(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -41,6 +51,7 @@ public class LoginSteps {
         loginpage.darClicBotonLogin();
     }
     @Then("debería ver la página principal de productos")
+
     public void debería_ver_la_página_principal_de_productos(){
         loginpage.validarLogoInicio();
     }
@@ -53,7 +64,22 @@ public class LoginSteps {
         if (driver != null){
             driver.quit();
         }
-
+    }
+    @When("se extrae el usuario y contraseña")
+    public void se_extrae_el_usuario_y_contraseña(){
+       loginpage.validarExtraccionCredenciales();
+    }
+    @When("se extraen y agregan usuario y contraseña")
+    public void se_extraen_y_agregan_usuario_y_contraseña (){
+        loginpage.ValidarAsignacionCredencialesAutomatico();
+    }
+    @When("Seleccionar el producto {string} y hacer clic en su botón {string}")
+    public void Seleccionar_el_producto_y_hacer_clic_en_su_botón_Add_to_cart(String sauceLabsBackpack, String addToCart){
+        loginpage.validarAgregarProductoCarrito();
+    }
+    @And ("Dar clic en el ícono del carrito de compras el sistema muestra la pantalla {string} con la mochila en la lista")
+    public void Dar_clic_en_el_ícono_del_carrito_de_compras_el_sistema_muestra_la_pantalla_con_la_mochila_en_la_lista(String yourCart){
+        loginpage.validarPoductoLista();
     }
 
 }

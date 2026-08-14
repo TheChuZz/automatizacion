@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "LoginSteps",
-        tags = "@Login002",
+        tags = "@Login001-004E2E",
         monochrome = true)
 
 public class TestRunner {
