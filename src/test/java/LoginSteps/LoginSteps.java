@@ -81,5 +81,29 @@ public class LoginSteps {
     public void Dar_clic_en_el_ícono_del_carrito_de_compras_el_sistema_muestra_la_pantalla_con_la_mochila_en_la_lista(String yourCart){
         loginpage.validarPoductoLista();
     }
+    @And("Dar clic en el botón {string}")
+    public void Dar_clic_en_el_botón (String Checkout){
+        loginpage.validarCheckout();
+    }
+    @Then("Ingresar en el campo First Name {string} e Ingresar en el campo Last Name {string}")
+    public void Ingresar_en_el_campo_First_Name_e_Ingresar_en_el_campo_Last_Name(String nombre, String apellido){
+        loginpage.ingresarNombreyApellido(nombre, apellido);
+    }
+    @And("Ingresar {string} en el campo Zip Postal")
+    public void Ingresar_en_el_campo_Zip_Postal(String codigo){
+        loginpage.ingresarCodigoPostal(codigo);
+    }
+    @And("Dar clic en el botón2 {string}")
+    public void Dar_clic_en_el_botón2 (String Continue){
+      loginpage.validarContinuar();
+    }
+    @Then("Se muestra la pantalla Checkout Overview con el resumen y total a pagar y Hacer clic en el botón {string}")
+    public void Se_muestra_la_pantalla_Checkout_Overview_con_el_resumen_y_total_a_pagar_y_Hacer_clic_en_el_botón (String Finish){
+        loginpage.validarfinalizarOrden();
+    }
+    @Then("Validacion de  mensaje exacto {string}")
+    public void Validacion_de_mensaje_exacto(String mensaje){
+        loginpage.validarMensajeExcato(mensaje);
+    }
 
 }

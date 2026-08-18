@@ -24,7 +24,16 @@ public class LoginPage {
     private By aMochila = By.xpath("//a[@id='item_4_title_link']//div");
     private By btnMochila = By.xpath("//button[@class='btn btn_primary btn_small btn_inventory']");
     private By btnCarrito = By.xpath("//a[@class='shopping_cart_link']");
+    private By btnCheckout = By.xpath("//button[@class='btn btn_action btn_medium checkout_button ']");
+    private By inputNombre = By.xpath("//input[@placeholder='First Name']");
+    private By inputApellido = By.xpath("//input[@placeholder='Last Name']");
+    private By inputCodigopostal = By.xpath("//input[@placeholder='Zip/Postal Code']");
+    private By btnContinuar = By.xpath("//input[@class='submit-button btn btn_primary cart_button btn_action']");
+    private By btnFinalizar = By.xpath("//button[@id='finish']");
+    private By mnjFinalexacto = By.xpath("//h2[@class='complete-header']");
+    //h2[@class='complete-header']
 
+    //input[@placeholder='First Name']
     //Constructor
     public LoginPage (WebDriver driver){
         this.driver = driver;
@@ -181,9 +190,86 @@ public class LoginPage {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(btnCarrito));
             driver.findElement(btnCarrito).click();
+            //Thread.sleep(5000);
         } catch (Exception e){
             System.out.printf("Error al consultar producto en carrito" + e );
             throw new AssertionError("Error al consultar producto en carrito" + e);
+        }
+    }
+    public void validarCheckout(){
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(1));
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(btnCheckout));
+            driver.findElement(btnCheckout).click();
+            //Thread.sleep(5000);
+        } catch (Exception e){
+            System.out.printf("Error al realizar checkout" + e);
+            throw new AssertionError("Error al realizar checkout" + e);
+        }
+
+    }
+    public void ingresarNombreyApellido(String nombre, String apellido){
+        try {
+            driver.findElement(inputNombre).sendKeys(nombre);
+            driver.findElement(inputApellido).sendKeys(apellido);
+        }catch (Exception e){
+            System.out.printf("Error al ingresar datos: " + nombre + apellido + e );
+            throw new AssertionError("Error al ingresar datos: " + e);
+        }
+    }
+    public void ingresarCodigoPostal(String codigo){
+        try {
+            driver.findElement(inputCodigopostal).sendKeys(codigo);
+            //Thread.sleep(5000);
+        }catch (Exception e){
+            System.out.printf("Error en codigo postal: " + codigo + e);
+        }
+    }
+    public void validarContinuar(){
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(1));
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(btnContinuar));
+            driver.findElement(btnContinuar).click();
+            //Thread.sleep(5000);
+        } catch (Exception e){
+            System.out.printf("Error al Continuar: " + e);
+            throw new AssertionError("Error al Continuar: " + e);
+        }
+
+    }
+    public void validarfinalizarOrden(){
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(1));
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(btnFinalizar));
+            driver.findElement(btnFinalizar).click();
+            Thread.sleep(5000);
+        } catch (Exception e){
+            System.out.printf("Error al Finalizar orden: " + e);
+            throw new AssertionError("Error al Finalizar orden: " + e);
+        }
+
+    }
+    public void validarMensajeExcato(String mensaje){
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(mnjFinalexacto));
+            driver.findElement(mnjFinalexacto).isDisplayed();
+            WebElement element = driver.findElement(mnjFinalexacto);
+            String textoMsj = element.getText();
+
+            System.out.println(" Este es el mensaje extraido : " + textoMsj);
+             if (textoMsj.contains(mensaje)){
+                 System.out.printf("El mensaje extraido es correcto : " + mensaje);
+
+             }else {
+                 System.out.printf("No coincide con el mensaje exacto: " + mensaje);
+                 throw new RuntimeException("No coincide con el mensaje exacto: " + mensaje);
+             }
+
+        }catch (Exception e){
+            System.out.printf("Error de mendaje exacto: " + e );
+            throw new AssertionError("Error de mendaje exacto: " + e);
+
         }
     }
 
